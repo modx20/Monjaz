@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronLeft, ShieldCheck } from 'lucide-react';
+import { toAbsoluteUrl } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: 'سياسة الخصوصية | منصة مِنْجَز',
   description:
     'تعرف على كيفية حماية خصوصيتك وملفاتك في منصة مِنْجَز، وآلية المعالجة المحلية في المتصفح والمعالجة المؤقتة لأداة OCR واستخدام إحصائيات الموقع.',
   alternates: {
-    canonical: '/privacy',
+    canonical: toAbsoluteUrl('/privacy'),
   },
   openGraph: {
     title: 'سياسة الخصوصية | منصة مِنْجَز',
@@ -27,13 +28,13 @@ export default function PrivacyPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'الرئيسية',
-        item: '/',
+        item: toAbsoluteUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'سياسة الخصوصية',
-        item: '/privacy',
+        item: toAbsoluteUrl('/privacy'),
       },
     ],
   };

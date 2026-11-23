@@ -5,6 +5,7 @@ import { ArrowLeft, ChevronLeft, ShieldCheck, ShieldAlert } from 'lucide-react';
 import ToolWorkspaceLoader from '@/components/ToolWorkspaceLoader';
 import { AppIconTile } from '@/components/tool-ui/AppIconTile';
 import { getRelatedTools, getToolBySlug, TOOLS_REGISTRY } from '@/lib/tools-registry';
+import { toAbsoluteUrl } from '@/lib/site-config';
 
 export function generateStaticParams() {
   return TOOLS_REGISTRY.map((tool) => ({ slug: tool.slug }));
@@ -36,12 +37,12 @@ export async function generateMetadata({
       'أونلاين مجاناً',
     ],
     alternates: {
-      canonical: `/tools/${tool.slug}`,
+      canonical: toAbsoluteUrl(`/tools/${tool.slug}`),
     },
     openGraph: {
       title: `${tool.title} | مِنْجَز`,
       description: tool.shortDesc,
-      url: `/tools/${tool.slug}`,
+      url: toAbsoluteUrl(`/tools/${tool.slug}`),
       type: 'website',
       locale: 'ar_AR',
       siteName: 'مِنْجَز',
@@ -80,7 +81,7 @@ export default async function ToolPage({
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: tool.title,
-    url: `/tools/${tool.slug}`,
+    url: toAbsoluteUrl(`/tools/${tool.slug}`),
     applicationCategory: 'UtilitiesApplication',
     applicationSubCategory: tool.categoryLabel,
     operatingSystem: 'All',
@@ -102,19 +103,19 @@ export default async function ToolPage({
         '@type': 'ListItem',
         position: 1,
         name: 'الرئيسية',
-        item: '/',
+        item: toAbsoluteUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: tool.categoryLabel,
-        item: `/#${categoryAnchor}`,
+        item: toAbsoluteUrl(`/#${categoryAnchor}`),
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: tool.title,
-        item: `/tools/${tool.slug}`,
+        item: toAbsoluteUrl(`/tools/${tool.slug}`),
       },
     ],
   };

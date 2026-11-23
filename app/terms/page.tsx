@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronLeft, FileText } from 'lucide-react';
+import { toAbsoluteUrl } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: 'شروط الاستخدام | منصة مِنْجَز',
   description:
     'الشروط والأحكام المنظمة لاستخدام الأدوات الرقمية المجانية في منصة مِنْجَز، وحقوق الملكية الفكرية، وضوابط الاستخدام العادل.',
   alternates: {
-    canonical: '/terms',
+    canonical: toAbsoluteUrl('/terms'),
   },
   openGraph: {
     title: 'شروط الاستخدام | منصة مِنْجَز',
@@ -26,13 +27,13 @@ export default function TermsPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'الرئيسية',
-        item: '/',
+        item: toAbsoluteUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'شروط الاستخدام',
-        item: '/terms',
+        item: toAbsoluteUrl('/terms'),
       },
     ],
   };

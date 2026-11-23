@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import HomeCatalog from '@/components/HomeCatalog';
 import { TOOLS_REGISTRY } from '@/lib/tools-registry';
+import { toAbsoluteUrl } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   alternates: {
-    canonical: '/',
+    canonical: toAbsoluteUrl('/'),
   },
 };
 
@@ -26,7 +27,7 @@ export default async function HomePage({
       position: index + 1,
       name: tool.title,
       description: tool.shortDesc,
-      url: `/tools/${tool.slug}`,
+      url: toAbsoluteUrl(`/tools/${tool.slug}`),
     })),
   };
 

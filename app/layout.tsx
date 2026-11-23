@@ -3,6 +3,7 @@ import { Cairo, IBM_Plex_Sans_Arabic, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import { getSiteUrl, toAbsoluteUrl } from '@/lib/site-config';
 
 const cairo = Cairo({
   subsets: ['arabic', 'latin'],
@@ -25,8 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-const rawSiteUrl = process.env.APP_URL || 'https://monjez.tools';
-const siteUrl = rawSiteUrl.startsWith('http') ? rawSiteUrl : `https://${rawSiteUrl}`;
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -80,12 +80,21 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ar_AR',
     siteName: 'مِنْجَز',
+    images: [
+      {
+        url: toAbsoluteUrl('/og-image.png'),
+        width: 1200,
+        height: 630,
+        alt: 'منصة مِنْجَز — 39 أداة رقمية للـ PDF والصور والملفات',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'مِنْجَز | منصة الأدوات الرقمية الشاملة',
     description:
       'أدوات PDF والصور والملفات والإنتاجية بسرعة وأمان داخل المتصفح دون تثبيت برامج.',
+    images: [toAbsoluteUrl('/og-image.png')],
   },
 };
 
@@ -96,7 +105,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: 'مِنْجَز',
     alternateName: 'Monjez Online Tools',
     url: siteUrl,
-    logo: `${siteUrl}/icon.svg`,
+    logo: toAbsoluteUrl('/icon.svg'),
     description:
       'منصة عربية شاملة للأدوات الرقمية المجانية لمعالجة ملفات PDF والصور والمستندات والإنتاجية مباشرة داخل المتصفح.',
   };

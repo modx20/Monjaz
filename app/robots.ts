@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
+import { getSiteUrl } from '@/lib/site-config';
 
 export default function robots(): MetadataRoute.Robots {
-  const rawBaseUrl = process.env.APP_URL || 'https://monjez.tools';
-  const baseUrl = rawBaseUrl.startsWith('http') ? rawBaseUrl : `https://${rawBaseUrl}`;
+  const baseUrl = getSiteUrl();
 
   return {
     rules: [
@@ -13,6 +13,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
   };
 }

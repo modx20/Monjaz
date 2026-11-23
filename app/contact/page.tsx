@@ -2,13 +2,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ChevronLeft, Mail, MessageSquare } from 'lucide-react';
 import ContactForm from '@/components/ContactForm';
+import { toAbsoluteUrl } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: 'اتصل بنا | منصة مِنْجَز',
   description:
     'تواصل مع فريق منصة مِنْجَز لاقتراح أدوات رقمية جديدة أو الإبلاغ عن أي ملاحظة تقنية أو استفسار عام.',
   alternates: {
-    canonical: '/contact',
+    canonical: toAbsoluteUrl('/contact'),
   },
   openGraph: {
     title: 'اتصل بنا | منصة مِنْجَز',
@@ -27,13 +28,13 @@ export default function ContactPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'الرئيسية',
-        item: '/',
+        item: toAbsoluteUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'اتصل بنا',
-        item: '/contact',
+        item: toAbsoluteUrl('/contact'),
       },
     ],
   };

@@ -1,13 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { TOOLS_REGISTRY } from '@/lib/tools-registry';
+import { getSiteUrl, toAbsoluteUrl } from '@/lib/site-config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.APP_URL
-    ? process.env.APP_URL.startsWith('http')
-      ? process.env.APP_URL
-      : `https://${process.env.APP_URL}`
-    : 'https://monjez.tools';
-
+  const baseUrl = getSiteUrl();
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -18,33 +14,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/about`,
+      url: toAbsoluteUrl('/about'),
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: toAbsoluteUrl('/privacy'),
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/privacy`,
+      url: toAbsoluteUrl('/terms'),
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/terms`,
+      url: toAbsoluteUrl('/contact'),
       lastModified: now,
       changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.7,
     },
   ];
 
   const toolEntries: MetadataRoute.Sitemap = TOOLS_REGISTRY.map((tool) => ({
-    url: `${baseUrl}/tools/${tool.slug}`,
+    url: toAbsoluteUrl(`/tools/${tool.slug}`),
     lastModified: now,
     changeFrequency: 'weekly',
     priority: tool.popular ? 0.9 : 0.85,

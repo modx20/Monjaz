@@ -28,7 +28,7 @@ export default function ProductivityWorkspace({ slug }: { slug: string }) {
 
   // ======================== 1. QR GENERATOR ========================
   const [qrMode, setQrMode] = useState<'url' | 'wifi' | 'whatsapp' | 'email'>('url');
-  const [qrText, setQrText] = useState('https://monjez.tools');
+  const [qrText, setQrText] = useState('https://monjazz.netlify.app');
   const [wifiSsid, setWifiSsid] = useState('Monjez_WiFi');
   const [wifiPass, setWifiPass] = useState('12345678');
   const [wifiSec, setWifiSec] = useState<'WPA' | 'WEP' | 'nopass'>('WPA');

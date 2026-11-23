@@ -3,13 +3,14 @@ import Link from 'next/link';
 import { ArrowLeft, ChevronLeft, Cpu, Layers, Lock, Zap } from 'lucide-react';
 import { TOOL_CATEGORIES, TOOLS_REGISTRY } from '@/lib/tools-registry';
 import { AppIconTile } from '@/components/tool-ui/AppIconTile';
+import { toAbsoluteUrl } from '@/lib/site-config';
 
 export const metadata: Metadata = {
   title: 'من نحن | منصة مِنْجَز للأدوات الرقمية',
   description:
     'تعرف على منصة مِنْجَز، المكتبة العربية الشاملة التي تجمع 39 أداة رقمية مجانية لمعالجة ملفات PDF والصور والمستندات مباشرة داخل متصفحك بخصوصية تامة.',
   alternates: {
-    canonical: '/about',
+    canonical: toAbsoluteUrl('/about'),
   },
   openGraph: {
     title: 'من نحن | منصة مِنْجَز',
@@ -31,13 +32,13 @@ export default function AboutPage() {
         '@type': 'ListItem',
         position: 1,
         name: 'الرئيسية',
-        item: '/',
+        item: toAbsoluteUrl('/'),
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'من نحن',
-        item: '/about',
+        item: toAbsoluteUrl('/about'),
       },
     ],
   };
