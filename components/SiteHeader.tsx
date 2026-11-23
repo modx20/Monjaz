@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Menu, Search, X } from 'lucide-react';
 import { searchAndFilterTools } from '@/lib/tools-search';
-import { ToolIcon } from './tool-ui/ToolIcon';
+import { AppIconTile } from './tool-ui/AppIconTile';
 
 export default function SiteHeader() {
   const router = useRouter();
@@ -78,16 +78,16 @@ export default function SiteHeader() {
               أدوات الصور
             </Link>
             <Link
-              href="/#file-tools"
+              href="/#productivity-tools"
               className="whitespace-nowrap shrink-0 transition-colors hover:text-slate-950"
             >
-              الملفات والنصوص
+              الإنتاجية
             </Link>
             <Link
-              href="/#privacy"
+              href="/about"
               className="whitespace-nowrap shrink-0 transition-colors hover:text-slate-950"
             >
-              الخصوصية
+              من نحن
             </Link>
           </nav>
 
@@ -152,14 +152,35 @@ export default function SiteHeader() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="rounded-lg px-3 py-2.5 hover:bg-slate-50"
               >
-                الملفات والنصوص
+                الملفات والمستندات
               </Link>
               <Link
-                href="/#privacy"
+                href="/#productivity-tools"
                 onClick={() => setMobileMenuOpen(false)}
                 className="rounded-lg px-3 py-2.5 hover:bg-slate-50"
               >
-                الخصوصية والأمان
+                أدوات الإنتاجية
+              </Link>
+              <Link
+                href="/about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-lg px-3 py-2.5 hover:bg-slate-50"
+              >
+                من نحن
+              </Link>
+              <Link
+                href="/privacy"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-lg px-3 py-2.5 hover:bg-slate-50"
+              >
+                سياسة الخصوصية
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="rounded-lg px-3 py-2.5 hover:bg-slate-50"
+              >
+                اتصل بنا
               </Link>
             </div>
           </nav>
@@ -177,7 +198,7 @@ export default function SiteHeader() {
             aria-modal="true"
             aria-label="البحث السريع عن الأدوات"
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-xl overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl"
+            className="w-full max-w-xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
           >
             <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3">
               <Search className="h-5 w-5 shrink-0 text-slate-400" aria-hidden="true" />
@@ -217,11 +238,13 @@ export default function SiteHeader() {
                       <button
                         type="button"
                         onClick={() => navigateToTool(tool.slug)}
-                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-right transition-colors hover:bg-slate-50"
+                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-right transition-colors hover:bg-slate-50"
                       >
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-blue-700">
-                          <ToolIcon name={tool.iconName} className="h-4 w-4" />
-                        </div>
+                        <AppIconTile
+                          iconName={tool.iconName}
+                          category={tool.category}
+                          size="sm"
+                        />
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">
                             <span className="truncate text-sm font-semibold text-slate-900">

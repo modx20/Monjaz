@@ -5,7 +5,7 @@ export default function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="text-xl font-extrabold text-slate-950">
               مِنْجَز
@@ -29,10 +29,36 @@ export default function SiteFooter() {
           </div>
 
           <div>
+            <h2 className="text-sm font-bold text-slate-900">عن المنصة والقانونية</h2>
+            <ul className="mt-3 space-y-2 text-sm text-slate-600">
+              <li>
+                <Link href="/about" className="hover:text-slate-950">
+                  من نحن
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-slate-950">
+                  سياسة الخصوصية
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-slate-950">
+                  شروط الاستخدام
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-slate-950">
+                  اتصل بنا
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
             <h2 className="text-sm font-bold text-slate-900">الأمان والخصوصية</h2>
             <ul className="mt-3 space-y-2 text-sm text-slate-600">
-              <li>معالجة محلية في المتصفح لمعظم الأدوات دون رفع الملفات.</li>
-              <li>توضيح صريح ومباشر قبل أي معالجة تعتمد على الخادم مثل OCR.</li>
+              <li>معالجة محلية في المتصفح لـ 38 أداة دون رفع الملفات.</li>
+              <li>توضيح صريح ومباشر قبل أي معالجة سحابية مثل OCR.</li>
               <li>لا يتم تخزين ملفاتك أو الاحتفاظ بها بعد إتمام العملية.</li>
             </ul>
           </div>

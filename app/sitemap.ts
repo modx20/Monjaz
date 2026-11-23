@@ -8,20 +8,47 @@ export default function sitemap(): MetadataRoute.Sitemap {
       : `https://${process.env.APP_URL}`
     : 'https://monjez.tools';
 
-  const toolEntries: MetadataRoute.Sitemap = TOOLS_REGISTRY.map((tool) => ({
-    url: `${baseUrl}/tools/${tool.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: tool.popular ? 0.9 : 0.8,
-  }));
+  const now = new Date();
 
-  return [
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
-      priority: 1,
+      priority: 1.0,
     },
-    ...toolEntries,
+    {
+      url: `${baseUrl}/about`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
   ];
+
+  const toolEntries: MetadataRoute.Sitemap = TOOLS_REGISTRY.map((tool) => ({
+    url: `${baseUrl}/tools/${tool.slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: tool.popular ? 0.9 : 0.85,
+  }));
+
+  return [...staticPages, ...toolEntries];
 }

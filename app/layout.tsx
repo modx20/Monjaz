@@ -25,30 +25,58 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-const siteUrl = process.env.APP_URL || 'https://monjez.tools';
+const rawSiteUrl = process.env.APP_URL || 'https://monjez.tools';
+const siteUrl = rawSiteUrl.startsWith('http') ? rawSiteUrl : `https://${rawSiteUrl}`;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl.startsWith('http') ? siteUrl : `https://${siteUrl}`),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: 'مِنْجَز | منصة الأدوات الرقمية الشاملة للـ PDF والصور والملفات',
+    default: 'مِنْجَز | منصة الأدوات الرقمية الشاملة للـ PDF والصور والملفات أونلاين',
     template: '%s | مِنْجَز',
   },
   description:
-    'أنجز مهامك الرقمية مجاناً وبخصوصية تامة داخل متصفحك: دمج وضغط وتحويل ملفات PDF، تعديل الصور، ضغط ZIP، وأدوات الإنتاجية والمحتوى باللغة العربية.',
+    'منصة مِنْجَز تضم 39 أداة رقمية مجانية تعمل مباشرة في متصفحك: دمج وتقسيم وضغط PDF، تحويل Word وExcel وPowerPoint إلى PDF، ضغط وقص وإزالة خلفية الصور، ZIP، ورموز QR والباركود.',
   keywords: [
-    'أدوات PDF',
-    'دمج PDF',
+    'مِنْجَز',
+    'منجز',
+    'أدوات رقمية أونلاين',
+    'أدوات PDF مجانية',
+    'دمج ملفات PDF',
+    'تقسيم PDF',
     'ضغط PDF',
-    'تحويل الصور',
-    'ضغط الصور',
+    'تحويل Word إلى PDF',
+    'تحويل PDF إلى صور',
+    'ضغط الصور أونلاين',
+    'تغيير حجم الصور',
     'إزالة خلفية الصورة',
-    'توليد QR',
-    'أدوات رقمية عربية',
+    'تحويل WebP إلى PNG',
+    'ضغط وفك ضغط ZIP',
+    'إنشاء رمز QR مجاني',
+    'مولد باركود',
+    'عداد الكلمات والحروف',
+    'تنظيف النصوص العربية',
+    'التعرف على النصوص OCR',
+    'منصة أدوات عربية',
   ],
+  authors: [{ name: 'منصة مِنْجَز', url: siteUrl }],
+  creator: 'منصة مِنْجَز',
+  publisher: 'منصة مِنْجَز',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
     title: 'مِنْجَز | منصة الأدوات الرقمية الشاملة للـ PDF والصور والملفات',
     description:
-      'أكثر من 30 أداة رقمية عملية تعمل مباشرة في متصفحك لملفات PDF والصور والمستندات والإنتاجية.',
+      '39 أداة رقمية احترافية ومجانية لملفات PDF والصور والمستندات والإنتاجية تعمل بسرعة وخصوصية مباشرة في متصفحك.',
+    url: siteUrl,
     type: 'website',
     locale: 'ar_AR',
     siteName: 'مِنْجَز',
@@ -62,10 +90,38 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const jsonLd = {
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'مِنْجَز',
+    alternateName: 'Monjez Online Tools',
+    url: siteUrl,
+    logo: `${siteUrl}/icon.svg`,
+    description:
+      'منصة عربية شاملة للأدوات الرقمية المجانية لمعالجة ملفات PDF والصور والمستندات والإنتاجية مباشرة داخل المتصفح.',
+  };
+
+  const webSiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'مِنْجَز',
+    url: siteUrl,
+    inLanguage: 'ar',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  const webAppJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'مِنْجَز',
+    url: siteUrl,
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'All',
     inLanguage: 'ar',
@@ -84,10 +140,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       dir="rtl"
       className={`${cairo.variable} ${ibmArabic.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen flex flex-col bg-[#FAFAF9] text-slate-900 antialiased" suppressHydrationWarning>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="j1lHc7freUmyTqpEAoy77laWUUP4OdRWiAmPQHKysf4"
+        />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-PXFX7FRJ"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date());`,
+          }}
+        />
+      </head>
+      <body
+        className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-900 antialiased"
+        suppressHydrationWarning
+      >
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
         />
         <SiteHeader />
         <main className="flex-1">{children}</main>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ChevronLeft, ShieldCheck, ShieldAlert } from 'lucide-react';
 import ToolWorkspaceLoader from '@/components/ToolWorkspaceLoader';
-import { ToolIcon } from '@/components/tool-ui/ToolIcon';
+import { AppIconTile } from '@/components/tool-ui/AppIconTile';
 import { getRelatedTools, getToolBySlug, TOOLS_REGISTRY } from '@/lib/tools-registry';
 
 export function generateStaticParams() {
@@ -27,13 +27,24 @@ export async function generateMetadata({
 
   return {
     title: `${tool.title} مجاناً أونلاين`,
-    description: tool.longDesc,
-    keywords: tool.keywords,
+    description: `${tool.longDesc} بدون تثبيت برامج وبخصوصية عالية في متصفحك.`,
+    keywords: [
+      ...tool.keywords,
+      tool.title,
+      tool.categoryLabel,
+      'مِنْجَز',
+      'أونلاين مجاناً',
+    ],
+    alternates: {
+      canonical: `/tools/${tool.slug}`,
+    },
     openGraph: {
       title: `${tool.title} | مِنْجَز`,
       description: tool.shortDesc,
+      url: `/tools/${tool.slug}`,
       type: 'website',
       locale: 'ar_AR',
+      siteName: 'مِنْجَز',
     },
     twitter: {
       card: 'summary_large_image',
@@ -56,21 +67,73 @@ export default async function ToolPage({
   }
 
   const related = getRelatedTools(tool);
+  const categoryAnchor =
+    tool.category === 'pdf'
+      ? 'pdf-tools'
+      : tool.category === 'images'
+        ? 'image-tools'
+        : tool.category === 'files'
+          ? 'file-tools'
+          : 'productivity-tools';
 
   const softwareJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: tool.title,
+    url: `/tools/${tool.slug}`,
     applicationCategory: 'UtilitiesApplication',
+    applicationSubCategory: tool.categoryLabel,
     operatingSystem: 'All',
     inLanguage: 'ar',
     description: tool.longDesc,
+    featureList: tool.howToSteps,
     offers: {
       '@type': 'Offer',
       price: '0',
       priceCurrency: 'USD',
     },
   };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'الرئيسية',
+        item: '/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: tool.categoryLabel,
+        item: `/#${categoryAnchor}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: tool.title,
+        item: `/tools/${tool.slug}`,
+      },
+    ],
+  };
+
+  const howToJsonLd =
+    tool.howToSteps.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: `طريقة استخدام أداة ${tool.title}`,
+          description: tool.shortDesc,
+          step: tool.howToSteps.map((stepText, index) => ({
+            '@type': 'HowToStep',
+            position: index + 1,
+            name: `الخطوة ${index + 1}`,
+            text: stepText,
+          })),
+        }
+      : null;
 
   const faqJsonLd =
     tool.faqs.length > 0
@@ -94,6 +157,16 @@ export default async function ToolPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {howToJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        />
+      )}
       {faqJsonLd && (
         <script
           type="application/ld+json"
@@ -107,7 +180,7 @@ export default async function ToolPage({
           الرئيسية
         </Link>
         <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
-        <Link href={`/#${tool.category === 'pdf' ? 'pdf-tools' : tool.category === 'images' ? 'image-tools' : tool.category === 'files' ? 'file-tools' : 'productivity-tools'}`} className="hover:text-slate-900">
+        <Link href={`/#${categoryAnchor}`} className="hover:text-slate-900">
           {tool.categoryLabel}
         </Link>
         <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" />
@@ -118,9 +191,7 @@ export default async function ToolPage({
       <header className="mb-8 border-b border-slate-200 pb-6">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
           <div className="flex items-start gap-4">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-blue-700">
-              <ToolIcon name={tool.iconName} className="h-6 w-6" />
-            </div>
+            <AppIconTile iconName={tool.iconName} category={tool.category} size="lg" />
             <div>
               <h1 className="text-2xl font-extrabold text-slate-950 sm:text-3xl [text-wrap:balance]">
                 {tool.title}
@@ -128,6 +199,14 @@ export default async function ToolPage({
               <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
                 {tool.shortDesc}
               </p>
+              {tool.acceptedFormats && tool.acceptedFormats.length > 0 && (
+                <p className="mt-2 text-xs text-slate-500">
+                  الصيغ المدعومة:{' '}
+                  <span className="font-mono text-slate-700" dir="ltr">
+                    {tool.acceptedFormats.join(' · ')}
+                  </span>
+                </p>
+              )}
             </div>
           </div>
 
@@ -172,7 +251,7 @@ export default async function ToolPage({
         {tool.faqs.length > 0 && (
           <div>
             <h2 className="text-xl font-bold text-slate-950">أسئلة شائعة</h2>
-            <div className="mt-4 divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white">
+            <div className="mt-4 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white">
               {tool.faqs.map((faq, i) => (
                 <div key={i} className="p-4">
                   <h3 className="text-sm font-bold text-slate-900">{faq.question}</h3>
@@ -193,13 +272,11 @@ export default async function ToolPage({
               <Link
                 key={rel.slug}
                 href={`/tools/${rel.slug}`}
-                className="group flex flex-col justify-between rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-blue-700"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-blue-700"
               >
                 <div>
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-blue-700">
-                      <ToolIcon name={rel.iconName} className="h-4 w-4" />
-                    </div>
+                    <AppIconTile iconName={rel.iconName} category={rel.category} size="sm" />
                     <h3 className="text-sm font-bold text-slate-950 group-hover:text-blue-700">
                       {rel.title}
                     </h3>
